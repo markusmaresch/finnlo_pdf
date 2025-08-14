@@ -43,6 +43,7 @@ class FinnloPdf:
         os.makedirs(self.output_dir, exist_ok=True)
         logging.info(f"Saving pages in physical order as PNGs to '{self.output_dir}/'")
 
+        # Iterate through each page in the PDF.
         try:
             for i, page in enumerate(doc):
                 if page is None:
