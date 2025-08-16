@@ -17,7 +17,7 @@ class FinnloPdf:
     def __init__(self):
         self.pdf_source = '3842.pdf'
         self.raw_directory = 'pages_raw'
-        self.crop_directory = 'cropped_raw'
+        self.crop_directory = 'pages_cropped'
         self.output_dpi = 300
         self.crop_strip_height_ratio = 0.3
         self.crop_definitions = [

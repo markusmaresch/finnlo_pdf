@@ -208,4 +208,6 @@ __marimo__/
 
 .idea/
 3842.pdf
-output_pages/
+pages_raw/
+pages_cropped/
+
