@@ -21,6 +21,9 @@ class FinnloPdf:
         self.output_dpi = 300
         self.blank_page_std_dev_threshold = 5.0
         #
+        self.crop_margin_left_ratio = 0.07
+        self.crop_margin_right_ratio = 0.05
+        #
         self.crop_strip_height_ratio = 0.295
         self.crop_definitions = [
             {
@@ -28,7 +31,7 @@ class FinnloPdf:
                 'description': 'Strips from Vertical Breaks',
                 'breaks': [
                     0.08,  # Start of the first strip at the very top
-                    0.36,  # Start of the second strip
+                    0.358,  # Start of the second strip
                     0.65  # Start of the third strip
                 ]
             }
@@ -74,7 +77,11 @@ class FinnloPdf:
                         logging.error(f"Failed to load image '{page_raw_name}' with OpenCV.")
                         continue
 
-                    height, _, _ = image.shape
+                    height, width, _ = image.shape
+
+                    margin_left_px = int(width * self.crop_margin_left_ratio)
+                    margin_right_px = int(width * self.crop_margin_right_ratio)
+                    x_end_px = width - margin_right_px
 
                     # Calculate the fixed height in pixels for all strips from the ratio
                     strip_height_px = int(height * self.crop_strip_height_ratio)
@@ -90,8 +97,8 @@ class FinnloPdf:
                         # Ensure the crop does not go beyond the image boundary
                         y_end = min(y_end, height)
 
-                        # Perform the horizontal slice using numpy array slicing
-                        crop_img = image[y_start:y_end, :]
+                        # --- MODIFIED: Perform slice using both vertical and horizontal crops ---
+                        crop_img = image[y_start:y_end, margin_left_px:x_end_px]
 
                         crop_filename = self.get_page_crop(i, sub_index)
 
@@ -104,7 +111,6 @@ class FinnloPdf:
                             continue  # Skip saving this blank image
 
                         # Save the cropped image
-                        crop_filename = self.get_page_crop(i, sub_index)
                         cv2.imwrite(crop_filename, crop_img)
                         logging.info(f"Saved cropped image '{crop_filename}'")
 
