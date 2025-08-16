@@ -19,14 +19,16 @@ class FinnloPdf:
         self.raw_directory = 'pages_raw'
         self.crop_directory = 'pages_cropped'
         self.output_dpi = 300
-        self.crop_strip_height_ratio = 0.285
+        self.blank_page_std_dev_threshold = 5.0
+        #
+        self.crop_strip_height_ratio = 0.295
         self.crop_definitions = [
             {
                 'pages': range(44, 83),
                 'description': 'Strips from Vertical Breaks',
                 'breaks': [
                     0.08,  # Start of the first strip at the very top
-                    0.365,  # Start of the second strip
+                    0.36,  # Start of the second strip
                     0.65  # Start of the third strip
                 ]
             }
@@ -90,6 +92,16 @@ class FinnloPdf:
 
                         # Perform the horizontal slice using numpy array slicing
                         crop_img = image[y_start:y_end, :]
+
+                        crop_filename = self.get_page_crop(i, sub_index)
+
+                        gray_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+                        std_dev = np.std(gray_crop)
+                        # logging.info(f"Stddev '{crop_filename}' (std dev: {std_dev:.2f})")
+
+                        if std_dev < self.blank_page_std_dev_threshold:
+                            logging.info(f"Skipping blank image '{crop_filename}' (std dev: {std_dev:.2f})")
+                            continue  # Skip saving this blank image
 
                         # Save the cropped image
                         crop_filename = self.get_page_crop(i, sub_index)
