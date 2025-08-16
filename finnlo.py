@@ -19,14 +19,14 @@ class FinnloPdf:
         self.raw_directory = 'pages_raw'
         self.crop_directory = 'pages_cropped'
         self.output_dpi = 300
-        self.crop_strip_height_ratio = 0.3
+        self.crop_strip_height_ratio = 0.285
         self.crop_definitions = [
             {
                 'pages': range(44, 83),
                 'description': 'Strips from Vertical Breaks',
                 'breaks': [
-                    0.07,  # Start of the first strip at the very top
-                    0.36,  # Start of the second strip
+                    0.08,  # Start of the first strip at the very top
+                    0.365,  # Start of the second strip
                     0.65  # Start of the third strip
                 ]
             }
