@@ -125,7 +125,7 @@ class FinnloPdf:
 
         prn0 = self.get_page_raw(0)
         if os.path.exists(prn0):
-            logging.info('Done with extracting pages, have: {prn0}')
+            logging.info(f'Done with extracting pages, have: {prn0}')
             return True
 
         if not os.path.exists(self.pdf_source):
