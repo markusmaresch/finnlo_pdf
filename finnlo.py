@@ -8,7 +8,7 @@ import os
 import numpy as np
 import cv2
 
-import fitz  # This is the PyMuPDF library
+import fitz  # This is the PyMuPDF library: pip install pymupdf
 
 from py_log_util.log_wrapper import LogWrapper
 
